@@ -1,16 +1,31 @@
-# bgg_mobile
+## BGG Mobile
+BGG Mobile provides a mobile interface for Android and iOS devices to access
+https://boardgamegeek.com.
 
-BGG Mobile
+It allows you to:
+1. See a list of the current Hot games and search for any game in the database
+2. Access the game forums as well as the site-wide forums
+3. View your forum subscriptions
+4. View your collection as well the collection of any other user on BGG, sorted
+   by number of players.
+
+## Screenshots
+<p align="center">
+  <img src="/screenshots/hot.png?raw=true" width="256" height="455">
+  <img src="/screenshots/boardgame.png?raw=true" width="256" height="455">
+  <img src="/screenshots/drawer.png?raw=true" width="256" height="455">
+</p>
+<p align="center">
+  <img src="/screenshots/forums.png?raw=true" width="256" height="455">
+  <img src="/screenshots/threads.png?raw=true" width="256" height="455">
+  <img src="/screenshots/articles.png?raw=true" width="256" height="455">
+</p>
+<p align="center">
+  <img src="/screenshots/collection.png?raw=true" width="256" height="455">
+  <img src="/screenshots/collection_list.png?raw=true" width="256" height="455">
+  <img src="/screenshots/settings.png?raw=true" width="256" height="455">
+</p>
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This application is developed with the [Flutter](https://flutter.dev/) toolkit.
+You will need to download the toolkit to build / run the application.
