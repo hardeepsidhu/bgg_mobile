@@ -29,3 +29,7 @@ It allows you to:
 ## Getting Started
 This application is developed with the [Flutter](https://flutter.dev/) toolkit.
 You will need to download the toolkit to build / run the application.
+
+[Here](https://kobiton.com/topics/develop-deploy-and-test-flutter-apps/) is a
+really good post on setting up a development environment to build and run the
+application on either iOS or Android devices.
