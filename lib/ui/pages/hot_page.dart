@@ -13,7 +13,7 @@ class HotPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Scaffold(
         appBar: AppBar(
-          title: Text('Hot'),
+          title: Text('Hot Games'),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),

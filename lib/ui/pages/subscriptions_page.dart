@@ -82,6 +82,7 @@ class _SubscriptionsWidgetState extends State<_SubscriptionsWidget> {
         _launchSubscription(context, _subscriptions.first, replace: true);
       } else {
         Navigator.pop(context);
+        _handleRefresh();
       }
     });
 
