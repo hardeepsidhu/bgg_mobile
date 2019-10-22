@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:bgg_mobile/network/api.dart';
@@ -61,6 +63,13 @@ class _ArticlesWidget extends StatefulWidget {
 
 class _ArticlesWidgetState extends State<_ArticlesWidget> {
   Future _future;
+  ScrollController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = new ScrollController();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +80,7 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
     return FutureWidgetBuilder.buildView((context, obj) {
       return RefreshIndicator(
         child: ListView.separated(
+          controller: _controller,
           separatorBuilder: (context, index) => Divider(
             color: Colors.black,
           ),
@@ -82,6 +92,7 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
               child: _articleCell(obj[index]),
             );
           },
+          key: new Key(_randomString(2)),
         ),
         onRefresh: _handleRefresh,
       );
@@ -125,7 +136,9 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
               onTapUrl: ((url) async {
                 if (url == 'http://spoiler.com') {
                   article.toggleSpoilers();
-                  setState(() {});
+                  setState(() {
+                    _controller = new ScrollController(initialScrollOffset: _controller.offset);
+                  });
                   return;
                 }
                 else if (await canLaunch(url)) {
@@ -136,5 +149,17 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
          ),
         ]),
     );
+  }
+
+  String _randomString(int length) {
+    var rand = new Random();
+    var codeUnits = new List.generate(
+        length,
+            (index){
+          return rand.nextInt(33)+89;
+        }
+    );
+
+    return new String.fromCharCodes(codeUnits);
   }
 }
