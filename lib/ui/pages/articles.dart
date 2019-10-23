@@ -85,6 +85,7 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
       return RefreshIndicator(
         child: ListView.builder(
           controller: _controller,
+          padding: EdgeInsets.zero,
           itemCount: obj.length,
           itemBuilder: (context, index) {
             return GestureDetector(
@@ -107,7 +108,7 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
 
   Widget _articleCell(Article article) {
     return Padding(
-      padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+      padding: EdgeInsets.only(bottom: 10.0),
       child:
           new Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
