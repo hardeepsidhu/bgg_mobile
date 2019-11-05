@@ -10,6 +10,7 @@ import 'package:bgg_mobile/models/boardgame.dart';
 import 'package:bgg_mobile/models/forum.dart';
 import 'package:bgg_mobile/models/helper.dart';
 import 'package:bgg_mobile/models/thread.dart';
+import 'package:xml/xml.dart' as xml;
 
 class Api {
   static final Api _api = new Api._internal();
@@ -190,9 +191,18 @@ class Api {
     };
 
     var response = await _doGet('/xmlapi2/thread', parameters);
-    return _getJsonList(response, ['thread', 'articles', 'article'], ((obj) {
-      return Article.fromJson(obj);
-    }));
+
+    List<Article> list = new List<Article>();
+
+    var document = xml.parse(response.body);
+    var articles = document.findAllElements('article');
+
+    for (var xml in articles) {
+      var article = Article.fromXml(xml);
+      list.add(article);
+    }
+
+    return list;
   }
 
   Future<Response> getGeeklist(String id) async {
@@ -224,6 +234,7 @@ class Api {
 
   Future<Response> markThreadAsRead(String id) async {
     var body = {
+      'instanceid': '1',
       'instanceid': '1',
       'loadmodule': '1',
       'sort': '',

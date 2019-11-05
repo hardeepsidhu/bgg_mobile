@@ -1,4 +1,5 @@
 import 'package:bgg_mobile/models/helper.dart';
+import 'package:xml/xml.dart';
 
 class Article {
   DateTime editDate;
@@ -11,15 +12,36 @@ class Article {
   String subject;
   bool showSpoilers;
 
-  Article.fromJson(Map<String, dynamic> json) {
-    editDate = Helper.getDateTime(json, 'editdate');
-    id = json['id'];
-    link = json['link'];
-    numEdits = Helper.getInt(json, 'numedits');
-    postDate = Helper.getDateTime(json, 'postdate');
-    username = json['username'];
-    body = Helper.parseHtml(Helper.getTextValue(json, 'body'));
-    subject = Helper.getTextValue(json, 'subject');
+  Article.fromXml(XmlElement xml) {
+    for (var attr in xml.attributes) {
+      var name = attr.name.qualified;
+      var value = attr.value;
+
+      switch (name) {
+        case 'id':
+          id = value;
+          break;
+        case 'username':
+          username = value;
+          break;
+        case 'link':
+          link = value;
+          break;
+        case 'postdate':
+          postDate = Helper.getDateTimeFromString(value);
+          break;
+        case 'editdate':
+          editDate = Helper.getDateTimeFromString(value);
+          break;
+        case 'numedits':
+          numEdits = int.parse(value);
+          break;
+      }
+    }
+
+    subject = xml.findElements('subject')?.first?.text;
+    body = xml.findElements('body')?.first?.text;
+
     showSpoilers = false;
   }
 

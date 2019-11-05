@@ -17,7 +17,8 @@ class ArticlesArguments {
   final String threadId;
   final String minArticleId;
 
-  ArticlesArguments(this.title, this.threadId, this.minArticleId, [this.showNext, this.nextPressed]);
+  ArticlesArguments(this.title, this.threadId, this.minArticleId,
+      [this.showNext, this.nextPressed]);
 }
 
 class Articles extends StatelessWidget {
@@ -35,22 +36,24 @@ class Articles extends StatelessWidget {
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
-          actions: (args.showNext != null && args.showNext) ? <Widget>[
-            // action button
-            IconButton(
-              icon: Icon(Icons.navigate_next),
-              onPressed: () {
-                if (args.nextPressed != null) {
-                  args.nextPressed();
-                }
-              },
-            )
-          ] : null,
+          actions: (args.showNext != null && args.showNext)
+              ? <Widget>[
+                  // action button
+                  IconButton(
+                    icon: Icon(Icons.navigate_next),
+                    onPressed: () {
+                      if (args.nextPressed != null) {
+                        args.nextPressed();
+                      }
+                    },
+                  )
+                ]
+              : null,
         ),
-        body: _ArticlesWidget(args.threadId, args.minArticleId)
-    );
+        body: _ArticlesWidget(args.threadId, args.minArticleId));
   }
 }
+
 class _ArticlesWidget extends StatefulWidget {
   final String threadId;
   final String minArticleId;
@@ -74,21 +77,18 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
   @override
   Widget build(BuildContext context) {
     if (_future == null) {
-      _future = Api.get().getArticles(widget.threadId, minArticleId: widget.minArticleId);
+      _future = Api.get()
+          .getArticles(widget.threadId, minArticleId: widget.minArticleId);
     }
 
     return FutureWidgetBuilder.buildView((context, obj) {
       return RefreshIndicator(
-        child: ListView.separated(
+        child: ListView.builder(
           controller: _controller,
-          separatorBuilder: (context, index) => Divider(
-            color: Colors.black,
-          ),
           itemCount: obj.length,
           itemBuilder: (context, index) {
             return GestureDetector(
-              onTap: () {
-              },
+              onTap: () {},
               child: _articleCell(obj[index]),
             );
           },
@@ -107,58 +107,55 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
 
   Widget _articleCell(Article article) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(20.0, 5.0, 20.0, 5.0),
-      child: new Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(article.username ?? '',
-                  style: UIHelper.textStyle(weight: FontWeight.bold)
+      padding: EdgeInsets.only(top: 5.0, bottom: 10.0),
+      child:
+          new Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Container(
+            color: Colors.black12,
+            child: Padding(
+              padding: EdgeInsets.fromLTRB(15.0, 5.0, 15.0, 5.0),
+              child: Row(children: [
+                Text(
+                  article.username ?? '',
+                  style: UIHelper.textStyle(weight: FontWeight.bold),
                 ),
-                flex: 1,
-              ),
-              Expanded(
-                  child: Text(Helper.formatDateTime(article.postDate),
-                      style: UIHelper.textStyle(weight: FontWeight.bold),
-                      textAlign: TextAlign.right,
-                  ),
-                  flex: 2,
-              ),
-            ]
+                Spacer(),
+                Text(
+                  Helper.formatDateTime(article.postDate),
+                  style: UIHelper.textStyle(weight: FontWeight.bold),
+                  textAlign: TextAlign.right,
+                ),
+              ]),
+            )),
+        Padding(
+          padding: EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
+          child: HtmlWidget(
+            article.getBody(),
+            textStyle: UIHelper.textStyle(),
+            bodyPadding: EdgeInsets.all(0),
+            onTapUrl: ((url) async {
+              if (url == 'http://spoiler.com') {
+                article.toggleSpoilers();
+                setState(() {
+                  _controller = new ScrollController(
+                      initialScrollOffset: _controller.offset);
+                });
+                return;
+              } else if (await canLaunch(url)) {
+                await launch(url);
+              }
+            }),
           ),
-          Padding(
-            padding: EdgeInsets.only(top: 10.0),
-            child:  HtmlWidget(article.getBody(),
-              textStyle: UIHelper.textStyle(),
-              bodyPadding: EdgeInsets.all(0),
-              onTapUrl: ((url) async {
-                if (url == 'http://spoiler.com') {
-                  article.toggleSpoilers();
-                  setState(() {
-                    _controller = new ScrollController(initialScrollOffset: _controller.offset);
-                  });
-                  return;
-                }
-                else if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              }),
-            ),
-         ),
-        ]),
+        ),
+      ]),
     );
   }
 
   String _randomString(int length) {
     var rand = new Random();
-    var codeUnits = new List.generate(
-        length,
-            (index){
-          return rand.nextInt(33)+89;
-        }
-    );
+    var codeUnits = new List.generate(length, (index) {
+      return rand.nextInt(33) + 89;
+    });
 
     return new String.fromCharCodes(codeUnits);
   }

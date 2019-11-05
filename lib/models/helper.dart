@@ -102,23 +102,26 @@ class Helper {
   static DateFormat _formatToday = new DateFormat('h:mm a');
   static DateFormat _formatOlder = new DateFormat('EEE MMM d, yyyy h:mm a');
 
-
   static DateTime getDateTime(Map<String, dynamic> json, String key) {
     if (json[key] != null && json[key].length > 0) {
-      try {
-        return _formatParse.parse(json[key]);
-      }
-      catch (Exception) {
-        try {
-          return DateTime.parse(json[key]);
-        }
-        catch (Exception) {
-          return null;
-        }
-      }
+      return getDateTimeFromString(json[key]);
     }
     else {
       return null;
+    }
+  }
+
+  static DateTime getDateTimeFromString(String value) {
+    try {
+      return _formatParse.parse(value);
+    }
+    catch (Exception) {
+      try {
+        return DateTime.parse(value);
+      }
+      catch (Exception) {
+        return null;
+      }
     }
   }
 
