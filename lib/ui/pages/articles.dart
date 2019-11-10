@@ -85,6 +85,7 @@ class _ArticlesWidgetState extends State<_ArticlesWidget> {
       return RefreshIndicator(
         child: ListView.builder(
           controller: _controller,
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.zero,
           itemCount: obj.length,
           itemBuilder: (context, index) {
