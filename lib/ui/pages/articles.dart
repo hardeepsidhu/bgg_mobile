@@ -12,12 +12,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class ArticlesArguments {
   final String title;
+  final String subtitle;
   final bool showNext;
   final Function nextPressed;
   final String threadId;
   final String minArticleId;
 
-  ArticlesArguments(this.title, this.threadId, this.minArticleId,
+  ArticlesArguments(this.title, this.subtitle, this.threadId, this.minArticleId,
       [this.showNext, this.nextPressed]);
 }
 
@@ -30,11 +31,26 @@ class Articles extends StatelessWidget {
 
     return new Scaffold(
         appBar: AppBar(
-          title: AutoSizeText(
-            args.title,
-            minFontSize: 12,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
+          title: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              AutoSizeText(
+                args.title,
+                minFontSize: 12.0,
+                maxFontSize: 18.0,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+              (args.subtitle != null) ?
+                Text(
+                  args.subtitle ?? '',
+                  style: TextStyle(
+                    fontSize: 10.0,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ) : new Container(),
+            ],
           ),
           actions: (args.showNext != null && args.showNext)
               ? <Widget>[

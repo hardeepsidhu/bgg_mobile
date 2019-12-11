@@ -54,7 +54,7 @@ class _ThreadsWidgetState extends State<_ThreadsWidget> {
       return FlatButton(
         onPressed: () {
           Navigator.pushNamed(context, Routes.articles,
-              arguments: ArticlesArguments(obj.subject, obj.id, '1'));
+              arguments: ArticlesArguments(obj.subject, null, obj.id, '1'));
         },
         child: Row(
           children: [Expanded(child: _threadCell(obj))],

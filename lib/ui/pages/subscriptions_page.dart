@@ -76,7 +76,7 @@ class _SubscriptionsWidgetState extends State<_SubscriptionsWidget> {
 
   void _launchSubscription(BuildContext context, Subscription subscription,
       {bool replace}) async {
-    var arguments = ArticlesArguments(subscription.getTitle(),
+    var arguments = ArticlesArguments(subscription.getTitle(), subscription.getHeaderSubtitle(),
         subscription.thread.id, subscription.getMinArticleId(), true, () {
       if (_subscriptions.length > 0) {
         _launchSubscription(context, _subscriptions.first, replace: true);

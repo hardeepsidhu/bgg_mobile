@@ -95,6 +95,24 @@ class Subscription {
     return list.join(' / ');
   }
 
+  String getHeaderSubtitle() {
+    if (boardgame != null) {
+      return boardgame.value;
+    }
+    else if (boardgameFamily != null) {
+      return boardgameFamily.value;
+    }
+    else if (guild != null) {
+      return guild.value;
+    }
+    else if (forum != null) {
+      return forum.value;
+    }
+    else {
+      return '';
+    }
+  }
+
   String getMinArticleId() {
     if (article != null) {
       return article.id;
