@@ -4,10 +4,11 @@ import 'package:bgg_mobile/models/boardgame.dart';
 class BoardgameCell extends StatelessWidget {
   final Boardgame game;
   final int rank;
+  final double rating;
 
   final Color mainColor = const Color(0xff3C3261);
 
-  BoardgameCell(this.game, {this.rank});
+  BoardgameCell(this.game, {this.rank, this.rating});
 
   @override
   Widget build(BuildContext context) {
@@ -27,8 +28,8 @@ class BoardgameCell extends StatelessWidget {
                   borderRadius: new BorderRadius.circular(10.0),
                   color: Colors.white,
                   image: new DecorationImage(
-                      image: new NetworkImage(game.thumbnail),
-                      fit: BoxFit.cover,
+                    image: new NetworkImage(game.thumbnail),
+                    fit: BoxFit.cover,
                   ),
                   boxShadow: [
                     new BoxShadow(
@@ -39,24 +40,43 @@ class BoardgameCell extends StatelessWidget {
                 ),
               ),
             ),
-            new Expanded (
+            new Expanded(
                 child: new Container(
-                  margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-                  child: new Column(
-                    children: [
-                      new Text(
-                        ((rank != null) ? rank.toString() + '. ' : '') + game.name,
-                        style: new TextStyle(
-                            fontSize: 20.0,
-                            fontFamily: 'Arvo',
-                            fontWeight: FontWeight.bold,
-                            color: mainColor),
-                      ),
-                    ],
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              margin: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
+              child: new Column(
+                children: [
+                  new Text(
+                    ((rank != null) ? rank.toString() + '. ' : '') + game.name,
+                    style: new TextStyle(
+                        fontSize: 20.0,
+                        fontFamily: 'Arvo',
+                        fontWeight: FontWeight.bold,
+                        color: mainColor),
                   ),
-                )
-            ),
+                ],
+                crossAxisAlignment: CrossAxisAlignment.start,
+              ),
+            )),
+            (rating != null)
+                ? new Padding(
+                    padding: const EdgeInsets.only(right: 15.0),
+                    child: new ClipOval(
+                      child: Container(
+                        color: Colors.lightGreen,
+                        height: 60.0,
+                        width: 60.0,
+                        child: Center(
+                            child: Text(
+                          rating.toStringAsFixed(1),
+                          style: new TextStyle(
+                              fontSize: 16.0,
+                              fontFamily: 'Arvo',
+                              fontWeight: FontWeight.bold,
+                              color: mainColor),
+                        )),
+                      ),
+                    ))
+                : new Container(),
           ],
         ),
         new Container(

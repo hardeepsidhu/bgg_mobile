@@ -208,22 +208,8 @@ class _CollectionState extends State<_Collection> {
         if (maxPlayers >= 7) {
           _sevenPlayer.add(item);
         }
-
-        if (item.rating != null && item.rating > 0) {
-          _allRatedItems.add(item);
-        }
       }
     }
-
-    _allRatedItems.sort((item1, item2) {
-      if (item1.rating > item2.rating) {
-        return -1;
-      } else if (item1.rating < item2.rating) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
 
     for (CollectionItem item in _all) {
       _allItems.add(item);
@@ -239,7 +225,21 @@ class _CollectionState extends State<_Collection> {
       if (item.wishlist) {
         _wishlist.add(item);
       }
+
+      if (item.rating != null && item.rating > 0) {
+        _allRatedItems.add(item);
+      }
     }
+
+    _allRatedItems.sort((item1, item2) {
+      if (item1.rating > item2.rating) {
+        return -1;
+      } else if (item1.rating < item2.rating) {
+        return 1;
+      } else {
+        return item1.game.name.compareTo(item2.game.name);
+      }
+    });
 
     List<List<CollectionItem>> collectionList = new List();
 

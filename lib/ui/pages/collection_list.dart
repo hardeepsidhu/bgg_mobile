@@ -43,7 +43,8 @@ class _CollectionListWidgetState extends State<_CollectionListWidget> {
       itemBuilder: (context, index) {
         var obj = widget.list[index];
         return new FlatButton(
-          child: new BoardgameCell(obj.game),
+          child: new BoardgameCell(obj.game,
+              rating: obj.rating > 0.0 ? obj.rating : null),
           padding: const EdgeInsets.all(0.0),
           color: Colors.white,
           onPressed: () {
