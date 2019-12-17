@@ -169,46 +169,8 @@ class _CollectionState extends State<_Collection> {
     _allItems.clear();
 
     HashSet gamesSet = new HashSet();
-
     for (CollectionItem item in _games) {
       gamesSet.add(item.game.id);
-
-      if (item.owned) {
-        _owned.add(item);
-
-        int minPlayers = item.game.minPlayers;
-        int maxPlayers = item.game.maxPlayers;
-
-        // TODO - check expansions for min/max player updates
-
-        if (minPlayers == 1) {
-          _solo.add(item);
-        }
-
-        if (minPlayers <= 2 && maxPlayers >= 2) {
-          _twoPlayer.add(item);
-        }
-
-        if (minPlayers <= 3 && maxPlayers >= 3) {
-          _threePlayer.add(item);
-        }
-
-        if (minPlayers <= 4 && maxPlayers >= 4) {
-          _fourPlayer.add(item);
-        }
-
-        if (minPlayers <= 5 && maxPlayers >= 5) {
-          _fivePlayer.add(item);
-        }
-
-        if (minPlayers <= 6 && maxPlayers >= 6) {
-          _sixPlayer.add(item);
-        }
-
-        if (maxPlayers >= 7) {
-          _sevenPlayer.add(item);
-        }
-      }
     }
 
     for (CollectionItem item in _all) {
@@ -240,6 +202,56 @@ class _CollectionState extends State<_Collection> {
         return item1.game.name.compareTo(item2.game.name);
       }
     });
+
+    for (CollectionItem item in _games) {
+      if (item.owned) {
+        _owned.add(item);
+
+        int minPlayers = item.game.minPlayers;
+        int maxPlayers = item.game.maxPlayers;
+
+        for (var expansion in _expansions) {
+          if (expansion.game.name.startsWith(item.game.name)) {
+            // Assume this is an expansion for the current game
+            if (expansion.game.minPlayers < minPlayers) {
+              minPlayers = expansion.game.minPlayers;
+            }
+
+            if (expansion.game.maxPlayers > maxPlayers) {
+              maxPlayers = expansion.game.maxPlayers;
+            }
+          }
+        }
+
+        if (minPlayers == 1) {
+          _solo.add(item);
+        }
+
+        if (minPlayers <= 2 && maxPlayers >= 2) {
+          _twoPlayer.add(item);
+        }
+
+        if (minPlayers <= 3 && maxPlayers >= 3) {
+          _threePlayer.add(item);
+        }
+
+        if (minPlayers <= 4 && maxPlayers >= 4) {
+          _fourPlayer.add(item);
+        }
+
+        if (minPlayers <= 5 && maxPlayers >= 5) {
+          _fivePlayer.add(item);
+        }
+
+        if (minPlayers <= 6 && maxPlayers >= 6) {
+          _sixPlayer.add(item);
+        }
+
+        if (maxPlayers >= 7) {
+          _sevenPlayer.add(item);
+        }
+      }
+    }
 
     List<List<CollectionItem>> collectionList = new List();
 
