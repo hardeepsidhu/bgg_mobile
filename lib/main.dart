@@ -17,6 +17,7 @@ import 'package:bgg_mobile/ui/routes.dart';
 import 'package:bgg_mobile/settings/settings.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Settings.get().load();
   runApp(MyApp());
 }
