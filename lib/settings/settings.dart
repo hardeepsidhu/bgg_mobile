@@ -5,6 +5,9 @@ class Settings {
 
   String _username = '';
   String _password = '';
+  Map<String, List> _allCollectionMap = new Map();
+  Map<String, List> _gamesCollectionMap = new Map();
+
   final _storage = new FlutterSecureStorage();
 
   static Settings get() {
@@ -23,6 +26,19 @@ class Settings {
   set password(String password) {
     _password = password;
     _storage.write(key: 'password', value: _password);
+  }
+
+  List getAllCollection(String username) {
+    return _allCollectionMap[username];
+  }
+
+  List getGamesCollection(String username) {
+    return _gamesCollectionMap[username];
+  }
+
+  void setCollection(String username, List allCollection, List gamesCollection) {
+    _allCollectionMap[username] = allCollection;
+    _gamesCollectionMap[username] = gamesCollection;
   }
 
   Future<void> load() async {

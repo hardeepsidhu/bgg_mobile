@@ -75,9 +75,15 @@ class _CollectionState extends State<_Collection> {
   List<CollectionItem> _allRatedItems = new List();
   List<CollectionItem> _allItems = new List();
 
+  List<CollectionItem> _cachedAllCollection;
+  List<CollectionItem> _cachedGamesCollection;
+
+
   @override
   Widget build(BuildContext context) {
     if (_future == null && widget.validUsername) {
+      _cachedAllCollection = Settings.get().getAllCollection(widget.username);
+      _cachedGamesCollection = Settings.get().getGamesCollection(widget.username);
       _future = getCollection(widget.username);
     }
 
@@ -151,8 +157,15 @@ class _CollectionState extends State<_Collection> {
   }
 
   Future<List<List<CollectionItem>>> getCollection(String username) async {
-    _all = await Api.get().getCollection(username, true);
-    _games = await Api.get().getCollection(username, false);
+    if (_cachedAllCollection != null && _cachedGamesCollection != null) {
+      _all = _cachedAllCollection;
+      _games = _cachedGamesCollection;
+    }
+    else {
+      _all = await Api.get().getCollection(username, true);
+      _games = await Api.get().getCollection(username, false);
+      Settings.get().setCollection(username, _all, _games);
+    }
 
     _owned.clear();
     _solo.clear();
