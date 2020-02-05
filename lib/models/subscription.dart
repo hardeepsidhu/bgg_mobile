@@ -27,6 +27,11 @@ class Subscription {
           switch (tokens[1]) {
             case "thread": {
               thread = link;
+
+              if (tokens.length > 4 && tokens[3] == "article") {
+                article = getArticle(tokens[4], ref.text);
+              }
+
               break;
             }
             case "forum": {
@@ -34,12 +39,7 @@ class Subscription {
               break;
             }
             case "article": {
-              var articles = tokens[2].split("#");
-              if (articles.length > 0) {
-                link = new Link(id: articles[0], value:link.value);
-              }
-
-              article = link;
+              article = getArticle(tokens[2], ref.text);
               break;
             }
             case "boardgame": {
@@ -62,6 +62,17 @@ class Subscription {
         }
       }
     }
+  }
+
+  Link getArticle(String token, String value) {
+    Link link;
+
+    var articles = token.split("#");
+    if (articles.length > 0) {
+      link = new Link(id: articles[0], value:value);
+    }
+
+    return link;
   }
 
   String getTitle() {
