@@ -55,7 +55,7 @@ class Article {
           .replaceAll(new RegExp(r'\[\/o\]'), '');
     }
     else {
-      return body.replaceAll(new RegExp(r'\[o\].*\[\/o\]'),
+      return body.replaceAll(new RegExp(r'\[o\](.|\r|\n)*?\[\/o\]'),
           r'<a href=http://spoiler.com>*SPOILER*</a>');
     }
   }
