@@ -22,12 +22,20 @@ class Api {
   Api._internal();
 
   Future<Response> login(String username, String password) async {
-    var parameters = {
-      'username': username,
-      'password': password,
-    };
+    var body = jsonEncode({
+      'credentials': {
+        'username': username,
+        'password': password,
+      }
+    });
 
-    return _doPost('/login', parameters: parameters);
+    var response = await _doPost('/login/api/v1', jsonBody: body);
+    while (response.statusCode == 202 && response.headers['set-cookie'] == null) {
+      await Future.delayed(Duration(seconds: 5));
+      response = await _doPost('/login/api/v1', jsonBody: body);;
+    }
+
+    return response;
   }
 
   Future<Response> getTop100() async {
@@ -191,6 +199,10 @@ class Api {
     };
 
     var response = await _doGet('/xmlapi2/thread', parameters);
+    while (response.statusCode == 429) {
+      await Future.delayed(Duration(seconds: 5));
+      response = await _doGet('/xmlapi2/thread', parameters);
+    }
 
     List<Article> list = new List<Article>();
 
@@ -285,12 +297,15 @@ class Api {
     }
   }
 
-  Future<Response> _doPost(String path, {Map<String, String> parameters, Map<String, String> body, bool setCookieHeader}) async {
+  Future<Response> _doPost(String path, {Map<String, String> parameters, Map<String, String> body, bool setCookieHeader, String jsonBody}) async {
     var uri = Uri.https(_bggUrl, path, parameters);
 
     Response response;
     if (setCookieHeader != null && setCookieHeader) {
       response = await _client.post(uri, body: body, headers:_cookieHeader);
+    }
+    else if (jsonBody != null) {
+      response = await _client.post(uri, headers: {"Content-Type": "application/json"}, body: jsonBody);
     }
     else {
       response = await _client.post(uri, body: body);
